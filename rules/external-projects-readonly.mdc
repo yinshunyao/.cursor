@@ -1,0 +1,18 @@
+---
+description: Protect external reference projects from modification
+alwaysApply: true
+---
+
+# External Projects - Read Only
+
+The following directories are **external Git repositories** cloned for reference and study. They must NEVER be modified:
+
+- `paperclip/` — AI employee platform (https://github.com/yinshunyao/paperclip.git)
+- `agency-agents-zh/` — AI agent expert team (https://github.com/yinshunyao/agency-agents-zh.git)
+
+## Rules
+
+1. **Never create, edit, or delete** any file under `paperclip/` or `agency-agents-zh/`
+2. **Read and search only** — use these projects as references to understand patterns, APIs, and architecture
+3. When the user asks about these projects, **read and explain** the code but do not propose changes to it
+4. If functionality from these projects needs to be reused, **copy or adapt** the relevant code into the project's own directories (e.g. `codiiy/`, `refrence/`, or new directories at the workspace root)
