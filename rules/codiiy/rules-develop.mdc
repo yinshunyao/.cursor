@@ -1,7 +1,8 @@
 ---
 description: "codiiy 开发编码规范：Python/Django 语言与依赖、路径与启动基准、ORM 建表与原生 SQL、组件调用（通用设计先行见 rules-develop-common）"
+globs:
+  - "codiiy/**/*"
 alwaysApply: true
-globs: "codiiy/**/*.{py,md}"
 ---
 
 # 开发编码规范（codiiy 子项目）

@@ -8,7 +8,15 @@
 |:---|:---|
 | `rules/` | 全局与各子工程的规则文件 |
 
-规则文件为 Markdown Cursor（`.mdc`），可通过 front matter 中的 `description`、`alwaysApply` 等字段控制适用范围。
+规则文件为 Markdown Cursor（`.mdc`），通过 front matter 中的 `description`、`globs`、`alwaysApply` 控制适用范围。
+
+### 若规则未出现在对话上下文中（Cursor 已更新配置）
+
+1. **确认工作区根目录**：用 Cursor 打开的是本仓库根目录 `ai-company/`（而不是仅 `codiiy/` 等子文件夹），否则读不到根下的 `.cursor/rules/`。
+2. **设置**：`Cursor Settings` → **Rules** → 确认 **Project Rules** 已开启；在 **Rules** 面板中应能看到各条规则及 “Always” 等标记。
+3. **重载窗口**：命令面板执行 `Developer: Reload Window`。
+4. **规则注入**：全局规则在 front matter 中同时配置了 `globs: ["**/*"]` 与 `alwaysApply: true`（规避部分 Cursor 版本对「仅 alwaysApply」不注入上下文的已知问题）。`codiiy` 细则使用 `globs: ["codiiy/**/*"]`。
+5. **兜底**：仓库根目录另有 `.cursorrules`，内容与上述 Project Rules 对齐，供仍读取旧入口的客户端引用。
 
 ## `rules/` 中的主要文件
 

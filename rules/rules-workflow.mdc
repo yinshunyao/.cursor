@@ -1,5 +1,7 @@
 ---
 description: "全局强制规则：定义从用户对话到需求、设计、开发、测试、质量保障的端到端工作流程"
+globs:
+  - "**/*"
 alwaysApply: true
 ---
 

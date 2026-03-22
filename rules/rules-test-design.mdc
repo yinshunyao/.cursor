@@ -1,10 +1,7 @@
 ---
 description: "workspace 强制规则：需求开发设计须同步产出测试设计，Bug 修复须沉淀 QA 文档"
 globs:
-  - "**/doc/01-or/**/*.md"
-  - "**/doc/02-dr/**/*.md"
-  - "**/doc/03-tr/**/*.md"
-  - "**/doc/91-qa/**/*.md"
+  - "**/*"
 alwaysApply: true
 ---
 

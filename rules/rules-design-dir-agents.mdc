@@ -1,5 +1,7 @@
 ---
 description: "workspace 结构设计/规划目录必须声明 AGENTS.md 并维护目录说明与编辑规范（全局）"
+globs:
+  - "**/*"
 alwaysApply: true
 ---
 

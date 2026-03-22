@@ -1,7 +1,7 @@
 ---
 description: "workspace 原始需求 (OR) 文档结构与内容标准（全局）"
 globs:
-  - "**/doc/01-or/**/*.md"
+  - "**/*"
 alwaysApply: true
 ---
 

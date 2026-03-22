@@ -1,5 +1,7 @@
 ---
 description: Protect external reference projects from modification
+globs:
+  - "**/*"
 alwaysApply: true
 ---
 

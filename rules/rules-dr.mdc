@@ -1,7 +1,7 @@
 ---
 description: "workspace 开发设计文档 (DR) 结构与内容标准，约束设计文档必须包含的章节和可追溯性（全局）"
 globs:
-  - "**/doc/02-dr/**/*.md"
+  - "**/*"
 alwaysApply: true
 ---
 

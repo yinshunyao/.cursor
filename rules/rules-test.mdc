@@ -1,9 +1,7 @@
 ---
 description: "workspace 测试目录结构规范：单元测试镜像映射 + E2E Playwright 测试组织"
 globs:
-  - "**/test/**/*.py"
-  - "**/test/**/*.ts"
-  - "**/test/**/AGENTS.md"
+  - "**/*"
 alwaysApply: true
 ---
 
