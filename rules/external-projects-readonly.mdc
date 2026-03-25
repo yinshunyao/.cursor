@@ -7,14 +7,16 @@ alwaysApply: true
 
 # External Projects - Read Only
 
-The following directories are **external Git repositories** cloned for reference and study. They must NEVER be modified:
+The following directories are **reference-only** and must NEVER be modified:
 
-- `paperclip/` — AI employee platform (https://github.com/yinshunyao/paperclip.git)
-- `agency-agents-zh/` — AI agent expert team (https://github.com/yinshunyao/agency-agents-zh.git)
+- `paperclip/` — external Git repository: AI employee platform (https://github.com/yinshunyao/paperclip.git)
+- `agency-agents-zh/` — external Git repository: AI agent expert team (https://github.com/yinshunyao/agency-agents-zh.git)
+- `skills/` — Claude (Anthropic) skills / agent-skills reference tree; treat as upstream reference, not project-owned code
+- `everything-claude-code/` — external reference project; treat as upstream reference, not project-owned code
 
 ## Rules
 
-1. **Never create, edit, or delete** any file under `paperclip/` or `agency-agents-zh/`
-2. **Read and search only** — use these projects as references to understand patterns, APIs, and architecture
-3. When the user asks about these projects, **read and explain** the code but do not propose changes to it
-4. If functionality from these projects needs to be reused, **copy or adapt** the relevant code into the project's own directories (e.g. `codiiy/`, `refrence/`, or new directories at the workspace root)
+1. **Never create, edit, or delete** any file under `paperclip/`, `agency-agents-zh/`, `skills/`, or `everything-claude-code/`
+2. **Read and search only** — use these trees as references to understand patterns, APIs, architecture, and skill formats
+3. When the user asks about these projects or skills, **read and explain** the content but do not propose changes inside those directories
+4. If functionality from these trees needs to be reused, **copy or adapt** the relevant code into the project's own directories (e.g. `codiiy/`, `refrence/`, or new directories at the workspace root)

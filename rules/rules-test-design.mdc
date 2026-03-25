@@ -8,7 +8,7 @@ alwaysApply: true
 # 测试设计与质量保障流程规范
 
 > 本规则适用于本 workspace 下任意工程目录中，按 `doc/01-or`、`doc/02-dr`、`doc/03-tr`、`doc/91-qa` 标准树维护文档的子项目（例如 `codiiy/doc/...`、`ls/doc/...`）。文中 `{工程}` 表示该子项目根目录名，路径均相对于 workspace 根目录。  
-> 已声明为**外部只读引用**的目录（如 `paperclip/`、`agency-agents-zh/`）不在此交付流程范围内，见 `rules-workflow.mdc`。
+> 已声明为**外部只读引用**的目录（如 `paperclip/`、`agency-agents-zh/`、`skills/`）不在此交付流程范围内，见 `rules-workflow.mdc`。
 
 ## 核心原则
 
