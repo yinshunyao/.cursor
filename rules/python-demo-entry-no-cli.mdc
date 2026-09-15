@@ -1,0 +1,38 @@
+---
+description: "Python demo 程序入口约定：新建脚本默认不做 CLI 参数解析，参数变量放在 __main__ 下便于直接运行"
+globs: "**/*.py"
+alwaysApply: true
+---
+
+# Python demo 入口（默认不使用命令行参数）
+
+当新增一个用于**示例/本地试跑/一次性验证**的 Python 脚本或可执行模块时：
+
+- **默认不要**引入 `argparse` / `sys.argv` 来做命令行参数解析
+- **参数与开关**用变量形式放在 `if __name__ == "__main__":` 下（或紧邻位置），便于直接在 IDE 里运行
+- 仅当脚本的主要使用方式是**从命令行/调度系统传参**或需要对外发布为 CLI 时，才引入 `argparse`，并提供 `--help`
+
+示例：
+
+```python
+def main(input_path: str, limit: int) -> None:
+    ...
+
+
+if __name__ == "__main__":
+    INPUT_PATH = "data/input.jsonl"
+    LIMIT = 100
+    main(input_path=INPUT_PATH, limit=LIMIT)
+```
+
+反例（仅为了 demo 运行而写 CLI 解析）：
+
+```python
+import argparse
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--input-path", required=True)
+    args = parser.parse_args()
+    ...
+```

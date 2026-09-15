@@ -1,0 +1,33 @@
+---
+description: insect/train_ba 对外开放训练代码 — 最小可见、独立可运行
+globs:
+  - insect/train_ba/**
+alwaysApply: false
+---
+
+# insect/train_ba 开发约束
+
+本目录是**对外开放**的训练代码。修改前先读 `insect/train_ba/AGENTS.md`。
+
+## 强制原则
+
+1. **最小可见代码**：只保留对外运行必需的脚本/配置/依赖/短说明；禁止 bak、实验脚本、一次性调试、冗长堆砌。
+2. **禁止跨目录依赖**：不得 import 或 `sys.path` 引用 `insect/train`、`insect/common`、`insect/script`、`codiiy` 等仓库其他目录；需要的逻辑复制进 `train_ba/`。
+3. **独立可运行**：本目录自带 `requirements*.txt`（或等价清单）；单独拷贝 `train_ba/` 后按文档即可运行。
+4. **精简**：能少文件就少文件；路径用相对路径或 `__main__` 内变量，不写死内部机器绝对路径。
+
+## 与内部目录
+
+- 完整流水线在 `insect/train/`；对外能力从内部**摘抄精简**到 `train_ba/`，禁止软链或路径 hack 回内部。
+
+## 反例 / 正例
+
+```python
+# ❌ 依赖仓库其他目录
+import sys
+sys.path.append("../train")
+from dataset_file_util import something
+
+# ✅ 所需函数复制到 train_ba 内自包含模块后本地导入
+from local_util import something
+```

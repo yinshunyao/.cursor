@@ -1,0 +1,23 @@
+---
+description: AutoCore 锁死外层 supervisor/：助理与常规实现不得改监护、沙箱、版本切换代码
+globs:
+  - AutoCore/supervisor/**
+alwaysApply: true
+---
+
+# AutoCore：锁死外层 `supervisor/`
+
+`AutoCore/supervisor/` 是保活、沙箱、版本与回退的外层。内层助理可以更新 `autocore/`，**不能**更新外层。
+
+## 强制
+
+1. **默认禁止修改** `supervisor/` 下任何文件（含新建、删除、重构）。
+2. 即使用户说「更新助手代码 / 让助理改自己 / 自更新」，也只允许动 `autocore/` 与 `data/updates/`，不得改 `supervisor/`。
+3. 仅当用户明确说「修改锁死外层」「改 supervisor」「改监护/沙箱/版本外层」时，才允许改本目录，且须先改 `AutoCore/doc/02-dr/05 运行监护/` 再改代码。
+4. `supervisor/` **不得 import `autocore`**。内层坏掉时外层仍须能回退和拉起。
+
+## 反例
+
+- 把微信通道、编排器、应用点击写进 `supervisor/`
+- 让内层 `fs_write` 或脚本覆盖 `supervisor/`
+- 为了「方便」让 supervisor 依赖 `autocore.config`

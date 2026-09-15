@@ -1,0 +1,32 @@
+---
+description: insect/script 等大文件改动时禁止冗余膨胀——复用已有函数、最小 diff
+globs:
+  - insect/script/**/*.py
+  - insect/**/*.py
+alwaysApply: false
+---
+
+# insect 代码修改：禁止冗余膨胀
+
+`insect/script/predict_all.py` 等文件体量已经很大。修改时以**最小必要 diff** 为先，禁止为同一逻辑再堆一套实现。
+
+## 强制
+
+1. **先搜再写**：改置信度归一化、topk 过滤、dia/尺寸改类等逻辑前，先搜索是否已有 `_renormalize_*` / `apply_*` / `try_*` 可复用。
+2. **一逻辑一入口**：同类计算只保留一个函数；调用方改调用，不复制粘贴公式。
+   - 例：剔除候选后的 `conf_new = conf_orig / sum(剩余)` → 统一用 `_renormalize_cls_topk_confs`。
+3. **禁止平行实现**：不得新增与现有函数行为等价的 `*_v2` / 再写一遍 for+sum+inv。
+4. **少加样板**：不为「可能用到」预留空配置块、重复注释、大段说明；注释只写非显而易见的约束。
+5. **能改 10 行不改 100 行**：优先在现有函数内补齐缺口（如漏归一化），避免新增大段包装层。
+
+## 反例 / 正例
+
+```python
+# ❌ 尺寸过滤后又手写一遍归一化
+sum_c = sum(c for _, _, c in fitting)
+for item, _, c in fitting:
+    item["conf"] = c / sum_c
+
+# ✅ 复用已有封装
+normalized = _renormalize_cls_topk_confs([item for item, _, _ in fitting])
+```
