@@ -9,6 +9,7 @@
 2. **没有合适工具** → 按分类新建到对应子目录，并在本文件对应分类下登记。
 3. **禁止**每次对话新建一次性脚本后丢弃；同类能力应沉淀为工具。
 4. 业务实现仍写在各子工程；本目录只收「助手侧可复用工具」。
+5. **不必登记**：单次 `ls`/`cat`/`git status` 探查；应登记：会重复用的流程、新建的辅助脚本。
 
 ## 目录分类
 
@@ -46,7 +47,8 @@
 
 | 路径 | 用途 | 调用 | 备注 |
 |:---|:---|:---|:---|
-| （暂无） | — | — | — |
+| `git/cursor-repo-status.sh` | 查看 `.cursor` 独立仓库 remote/分支/近期提交/脏文件 | `bash .cursor/tools/git/cursor-repo-status.sh`（cwd 任意） | 仓库根为 `.cursor/` |
+| `git/cursor-repo-push.sh` | 将 `.cursor` 当前分支推到 `origin` | `bash .cursor/tools/git/cursor-repo-push.sh` | 需已有本地 commit；会访问网络 |
 
 ## misc/
 
