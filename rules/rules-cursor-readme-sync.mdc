@@ -1,0 +1,42 @@
+---
+description: "全局：.cursor/README.md（及根目录 .cursorrules 摘要）须与 rules/、tools/ 变更同回合同步，禁止只改规则/工具不改索引"
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# `.cursor` 索引同步（README / `.cursorrules`）
+
+`.cursor/README.md` 是 `rules/` 与 `tools/` 的**目录索引**；workspace 根目录 `.cursorrules` 是 Project Rules 的**短摘要兜底**。改规则或工具结构时，必须同回合更新索引，禁止只改 `.mdc` / 脚本而索引落后。
+
+## 何时必须更新 `.cursor/README.md`
+
+满足任一则**同一回合**改 README：
+
+1. **新增 / 删除 / 重命名** `.cursor/rules/` 下任意 `.mdc`
+2. 规则的**作用概要**变了（读者只看 README 会误解）
+3. **新增 / 删除 / 重命名** `tools/` 下分类目录，或调整 `.cursor` 顶层目录职责
+4. 新增一条会写进 README「全局编码 / 工作流」表的全局规则（如 `rules-cursor-tools`）
+
+## README 写什么、不写什么
+
+- **写**：目录结构说明；每条规则一行「文件 | 作用概要」；`tools/` 指向 `tools/readme.md` 台账
+- **不写**：工具逐条调用说明（只在 `tools/readme.md`）；规则正文细则（只在对应 `.mdc`）
+
+## 何时必须更新 workspace 根 `.cursorrules`
+
+- 新增/删除/改写**常驻摘要**级约束（`alwaysApply` 或用户明确要求写进兜底摘要的条目）
+- 与 README 索引同一回合改；摘要保持短句，全文仍以 `.cursor/rules/` 为准
+
+## 与 `rules-cursor-tools` 的分工
+
+| 变更 | 更新哪里 |
+|:---|:---|
+| 单个工具脚本增删改 | `tools/readme.md`（台账） |
+| tools 分类/目录职责变化 | `tools/readme.md` **且** `.cursor/README.md` 目录表 |
+| 规则 `.mdc` 增删改 | `.cursor/README.md` 规则表（必要时 `.cursorrules`） |
+
+## 禁止
+
+- 只提交/推送新规则或新 tools 分类，却不改 README
+- README 长期缺失已存在的 `.mdc` 条目，或仍列出已删除文件
