@@ -9,6 +9,7 @@
 | 路径 | 说明 |
 |:---|:---|
 | `rules/` | 全局与各子工程的规则文件（`.mdc`） |
+| `tools/` | 可复用系统命令与辅助脚本；台账见 `tools/readme.md`（见 `rules-cursor-tools.mdc`） |
 | `其他技巧.md` | 非强制的提示词/操作备忘（不注入对话上下文） |
 
 规则文件为 Markdown Cursor（`.mdc`），通过 front matter 中的 `description`、`globs`、`alwaysApply` 控制适用范围。
@@ -44,6 +45,7 @@
 | 文件 | 作用概要 |
 |:---|:---|
 | `rules-develop-common.mdc` | 通用编码纪律：设计先行、变更顺序、调试权限 |
+| `rules-cursor-tools.mdc` | 系统命令/辅助脚本沉淀到 `.cursor/tools`；先查台账再调用，禁止每次新建 |
 | `python-demo-entry-no-cli.mdc` | Python demo 入口默认不用 CLI；参数放在 `__main__` |
 | `rules-frontend-design.mdc` | 前端界面：高完成度、有辨识度；避免通用「AI 审美」（按 `*.vue` / `*.tsx` 等触发） |
 
