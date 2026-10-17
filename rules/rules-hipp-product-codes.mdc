@@ -1,0 +1,65 @@
+---
+description: "hipp 跨产品产品码与资金 biz_type：仅允许 mgr/or/vf/cert；资金与注册来源必带产品码；业务审批留各产品、动账走 manager"
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# hipp 产品码与资金业务类型（强制）
+
+适用于 `hipp-manager`、`hipp-or`、`VoiceFix`、`hipp-https` 及同站其它 hipp 产品。扩展新产品码前须先改本规则与 `hipp-manager` 白名单，再改调用方。
+
+## 产品码（`product` / `register_source`）
+
+| 码 | 含义 | 用户端 | 本产品管理后台 |
+|:---|:---|:---|:---|
+| `mgr` | 平台身份与共享钱包 | `/mgr/`（账户控制台） | `/mgr/manager/`（资金/用户运营） |
+| `or` | 需求分析 | `/or/` | `/or/manager/` |
+| `vf` | VoiceFix 语音修复 | `/vf/` | `/vf/manager/` |
+| `cert` | 证书控制台 | `/cert/` | `/cert/manager/` |
+
+**仅允许**上表四码（及经本规则正式扩展后的新码）。
+
+### 管理后台 URL（强制）
+
+- 各产品**独立**管理后台，路径统一为 **`/{product}/manager/`**（末尾斜杠约定与现网 or 一致）。
+- 禁止再用零散别名充当管理入口规划真源（如历史 `/mgr/ops/`、`/vf/admin/`）；存量迁移到上表路径后再下线旧入口。
+- 管理后台做**本产品业务**（配置、审批、统计等）；跨产品资金/用户运营只在 `/mgr/manager/`。
+
+### 禁止
+
+- 使用历史别名 `manager`、`voice` 作为产品码（存量须一次性迁为 `mgr`、`vf`）。
+- 充值/流水/扣款写死成「平台默认码」而不写**实际发生产品**（例：在 `/mgr/` 充值 → `mgr`；vf 扣分钟 → `vf`）。
+- 各产品自建第二套资金账本；运营查用户、流水、手工入账/退费以 **hipp-manager** 为准。
+
+### 注册来源
+
+- 用户首次建号须写入 `register_source`（产品码），表示**实际注册入口**所属产品。
+- 列表与运营筛选按 `register_source` 划分；与资金流水的 `product` 独立（同一用户可跨产品消费）。
+
+## 业务类型（`biz_type`）
+
+资金相关记录（充值单、流水、S2S 扣款/入账）**必须**同时带：
+
+1. `product` — 实际处理的产品  
+2. `biz_type` — 该产品内的业务子类（非空字符串，建议 ≤64）
+
+首期约定（可扩展，扩展时同步改本规则与设计文档）：
+
+| 类别 | `biz_type` |
+|:---|:---|
+| 充值 | `recharge_wechat` / `recharge_alipay` / `recharge_dev` / `recharge_manual` |
+| 消费 | `consume_session`（or）/ `consume_voice`（vf）/ `consume_cert`（cert） |
+| 退费 | `refund_manual` / `refund_task_cancel` / `refund_appeal` |
+
+S2S `deduct` / `credit` 调用方须传 `product` + `biz_type`；manager 校验产品白名单，缺字段拒绝。
+
+## 运营与业务审批边界
+
+- **资金运营**（用户列表/拉黑/改密、流水与充值单、手工入账/退费）在 `/mgr/manager/`。
+- **业务审批**（如 vf 任务取消、申诉批准；or 业务配置；cert 业务统计）留在各产品 `/…/manager/`；批准后只调 hipp-manager S2S 动账，并传对的 `product` + `biz_type`。
+- 禁止把业务审批 UI 迁入 `/mgr/manager/`；禁止在产品后台再做与 manager 重复的资金账本结案。
+
+## 平台管理员
+
+- 平台管理员真源在 hipp-manager（CLI 建号/改密）；各产品管理端可校验同一套账号，首期不做细粒度 RBAC。

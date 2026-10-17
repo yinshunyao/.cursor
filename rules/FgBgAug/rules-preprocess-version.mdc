@@ -1,0 +1,49 @@
+---
+description: FgBgAug 数据集预处理版本号 — 改参数须 bump，代码按版本自动重建产物
+globs:
+  - FgBgAug/**
+alwaysApply: false
+---
+
+# FgBgAug：数据集预处理版本号
+
+`FgBgAug` 的 ② split / ③ dump_aug / ③b split_aug 产物受增强与划分旋钮影响。用显式版本号保证「改了参数就重建，不误用旧盘」。
+
+## 强制
+
+1. **单一版本源**：`FgBgAug/platform_config.py` 中的 `DATA_PREPROCESS_VERSION`（短字符串，如 `v1`、`v2`）。
+2. **改旋钮必 bump**：凡影响预处理产物的参数变更后，**必须**上调 `DATA_PREPROCESS_VERSION`，禁止只改旋钮不改版本。
+3. **代码识别**：`compare.prepare_upstream` 读取 `AUG_OUT_ROOT` / `AUG_SPLIT_ROOT` 下的 `.preprocess_version.json`；版本缺失或不等于配置 → **自动强制 ②→③→③b**（不必手开 `RERUN_*`）。
+4. **路径隔离**：dump / split 目录名含 `pp{DATA_PREPROCESS_VERSION}`，旧版本产物保留在旧路径，不混用。
+5. **写回标记**：重建成功后写入 `.preprocess_version.json`（含 version + 关键旋钮快照）。
+
+## 须 bump 的旋钮（非穷尽，以「会改变落盘图/划分」为准）
+
+- `EXPERIMENT_PROFILE` / `AUG_VERSION` / `FILL_NEAR_FG_PROB` / `A4_USE_COMPLEX_BG` / `OTHER_IMAGE_PROB`
+- `FG_*` / `BG_*` / `GLOBAL_*`
+- `INCLUDE_A0` / `AUG_COUNT` / `AUG_VAL_RATIO` / `AUG_VAL_USE_AUG` / `AUG_RANDOM_SPLIT`
+- `UPSTREAM_TEST_RATIO` / `UPSTREAM_VAL_RATIO` / `UPSTREAM_SPLIT_SEED` / `CUB_USE_OFFICIAL_SPLIT`
+- `MAX_CLASSES` / `MAX_PER_CLASS`（冒烟 ↔ 全量切换且依赖同一预处理树时）
+
+## 不必因 bump 的（训练侧）
+
+- `TRAIN_*` / `EPOCHS` / `BATCH` / `WEIGHTS_LIST` / `YOLO_TRAIN_AUG_SETTINGS` / `SEEDS` / `COMPARE` 训练超参  
+  → 只影响 `runs/`，不改预处理盘。
+
+## ① extract
+
+版本失配**默认不**自动重跑 ① extract（成本高）。`by_class/image` 缺失时才会强制 ①。提取逻辑/裁切参数变更时：手动 `RERUN_EXTRACT_BY_CLASS=True` **并** bump `DATA_PREPROCESS_VERSION`。
+
+## 反例
+
+- 改了 `FG_ROTATE_DEG` 却不 bump → 旧 dump 继续训练，结果不可比
+- 只开 `RERUN_DUMP_AUG` 却把版本留在旧号 → 路径未换，易与标记逻辑纠缠；应 bump 版本让新路径 + 自动重建
+
+## 正例
+
+```python
+# platform_config.py
+DATA_PREPROCESS_VERSION = "v2"  # was v1; FG rot 20→15 + AUG_VAL_RATIO 0.1→0.15
+```
+
+然后直接 `python compare.py`：版本检查失败 → 自动 ②③③b → 写入新标记。
